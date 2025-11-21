@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -44,5 +43,20 @@ public class UserController {
         );
         User savedUser = userDbService.saveUser(user);
         return new ResponseEntity<>(savedUser,HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @Valid @RequestBody UserDto userDto) {
+        return userDbService.updateUser(id, userDto)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+
+    @PutMapping("/{id}/role")
+    public ResponseEntity<User> changeUserRole(@PathVariable Long id, @RequestParam Roles newRole) {
+        return userDbService.changeRole(id, newRole)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }
