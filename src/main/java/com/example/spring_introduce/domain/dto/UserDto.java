@@ -1,5 +1,6 @@
 package com.example.spring_introduce.domain.dto;
 
+import com.example.spring_introduce.domain.Roles;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -29,4 +30,6 @@ public class UserDto {
     @NotBlank(message = "Email cannot be empty")
     @Email(message = "Email should be valid")
     private String email;
+
+    private Roles role;
 }

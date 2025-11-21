@@ -21,7 +21,13 @@ public class SecurityConfig {
         return http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/v1/users").permitAll()
+                        .requestMatchers(request ->
+                                "/v1/users".equals(request.getServletPath()) &&
+                                        request.getParameter("email") != null
+                        ).permitAll()
+
                         .requestMatchers(HttpMethod.GET, "/v1/users").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
